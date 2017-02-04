@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.2.xsd"
+       default-lazy-init="true">
+
+    <description>Shiro Configuration</description>
+
+    <!-- 安全认证过滤器 -->
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <property name="securityManager" ref="securityManager"/>
+        <property name="loginUrl" value="${shiro.loginUrl}"/>
+        <!--登录成功默认跳转页面，不配置则跳转至”/”。 如果登陆前点击的一个需要登录的页面，则在登录自动跳转到那个需要登录的页面。不跳转到此。 -->
+        <property name="successUrl" value="${shiro.successUrl}"/>
+        <!--没有权限跳转的链接 -->
+        <property name="unauthorizedUrl" value="/login"/>
+        <property name="filters">
+            <map>
+                <entry key="authc" value-ref="formAuthenticationFilter"/>
+                <entry key="ip" value-ref="ipAuthorizationFilter"/>
+            </map>
+        </property>
+        <property name="filterChainDefinitions">
+            <value>
+                /favicon.ico =anon
+                /css/**     = anon
+                /js/**     = anon
+                /api/message/**= anon
+                /logout        = logout
+                /druid/**      = anon
+                /test/**       = anon
+                /callback/**   = anon
+                /getCaptcha    = anon
+                /test/** = ip
+                /appMessage/callBack = anon
+                /user/toPsdModify = authc
+                /user/passwordModification = authc
+                <!--需要具体角色才能访问到的链接-->
+                /sms/toSendSMS = authc,roles[admin]
+                /sms/send = authc,roles[admin]
+                /sms/toReceiveSMSList = authc,roles[admin]
+                /common/** = authc,roles[admin]
+                /user/** = authc
+                /** = authc
+            </value>
+        </property>
+    </bean>
+
+    <!--基于ip的过滤器-->
+    <bean id="ipAuthorizationFilter" class="com.message.shiro.IPAuthorizationFilter">
+        <property name="allowIps">
+            <map>
+                <entry key="localIp1" value="192.168.181.189"/>
+            </map>
+        </property>
+    </bean>
+
+    <!-- 基于Form表单的身份验证过滤器 -->
+    <bean id="formAuthenticationFilter" class="com.message.shiro.MyFormAuthenticationFilter">
+    </bean>
+
+    <!-- 凭证匹配器 -->
+    <bean id="credentialsMatcher" class="com.message.shiro.CustomHashedCredentialsMatcher"/>
+
+    <!-- Realm实现 -->
+    <bean id="systemAuthorizingRealm" class="com.message.shiro.SystemAuthorizingRealm">
+        <property name="credentialsMatcher" ref="credentialsMatcher"/>
+        <property name="cachingEnabled" value="false"/>
+    </bean>
+
+    <!-- 定义 Shiro 主要业务对象 -->
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="sessionManager" ref="sessionManager"/>
+        <property name="realms" ref="systemAuthorizingRealm"/>
+    </bean>
+
+    <bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
+        <!--session 超时时间：30分钟 -->
+        <property name="globalSessionTimeout" value="${shiro.sessionTimeout}"/>
+        <property name="sessionIdCookie" ref="sessionIdCookie"/>
+        <!--持久化shiro session，以适应集群环境-->
+        <!--<property name="sessionDAO" ref="redisSessionDao"/>-->
+    </bean>
+
+    <!-- 指定本系统SESSIONID, 默认为: JSESSIONID 问题: 与SERVLET容器名冲突, 如JETTY, TOMCAT
+        等默认JSESSIONID, 当跳出SHIRO SERVLET时如ERROR-PAGE容器会为JSESSIONID重新分配值导致登录会话丢失! -->
+    <bean id="sessionIdCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
+        <constructor-arg name="name" value="xkeshi.session.id"/>
+    </bean>
+
+    <!--<bean id="redisSessionDao" class="com.xkeshi.webkits.shiro.RedisSessionCluster">
+        <property name="projectShiroSessionKey" value="${shiro.sessionkey}"/>
+    </bean>-->
+
+    <bean id="shiroLoginHandler" class="com.message.shiro.ShiroLoginHandler"/>
+
+    <!-- 保证实现了Shiro内部lifecycle函数的bean执行 -->
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+
+</beans>

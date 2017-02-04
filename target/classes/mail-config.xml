@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+    <!-- id:唯一性标志 template:邮件模板路径，classpath subject:标题 charset:邮件内容编码，默认utf-8 -->
+    <mail id="gatewayWarn" template="/mail/gatewayWarn.ftl" subject="短信平台警报"
+          charset="UTF-8"/>
+
+</templates>

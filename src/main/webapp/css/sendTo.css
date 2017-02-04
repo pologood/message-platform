@@ -1,0 +1,320 @@
+@charset "utf-8";
+/*	@description: 消息推送平台 发送app透传消息、发送客户端透传消息样式
+*	@author: jiangfeng
+*	@update: jiangfeng (2015-09-14) */
+
+.detail-wrap{
+    min-height: 400px;
+    height: auto;
+    overflow: hidden;
+}
+.form-body{
+    margin-bottom: 60px;
+    padding:26px 22px 50px;
+    background: #f9f9fa;
+    clear:both;
+}
+.form-item{
+    clear: both;
+    min-height: 36px;
+    height: auto;
+    /*overflow: hidden;*/
+    margin-bottom: 16px;
+}
+.form-item .form-label{
+    float: left;
+    width: 100px;
+    line-height: 36px;
+    color: #666;
+    font-size: 14px;
+}
+.form-item .form-detail{
+    margin-left: 100px;
+    overflow:visible;
+    color: #333;
+}
+.form-item .form-detail .input-wrap{
+    position: relative;
+    width: 96%;
+    line-height: 34px;
+    background: #fff;
+    border:1px solid #e6e7ec;
+    border-radius:3px;
+    cursor: text;
+}
+.onblur{
+    border:1px solid #e6e7ec;
+}
+.onfocus{
+    border-color:#009ce5 !important;
+}
+.textarea-div{
+    height: 104px;
+}
+.input-label,
+.word-count{
+    position: absolute;
+    display: block;
+    height: 34px;
+    line-height: 34px;
+    color: #d5d5d5;
+    overflow: hidden;
+    cursor: text;
+    z-index: 1;
+}
+.input-label{
+    left: 10px;
+    top: 0;
+}
+.word-count{
+    right: 14px;
+    bottom: 0;
+}
+.form-item .form-detail .input-wrap input{
+    width: 90%;
+    height: 20px;
+    line-height: 20px;
+    padding:7px 0 7px 10px;
+    background: #fff;
+    border:0 none;
+    outline: 0 none;
+}
+.form-item .form-detail .input-wrap input.complete-input{
+    width: 98%;
+}
+.form-item .form-detail .input-wrap textarea{
+    box-sizing:border-box;
+    -moz-box-sizing:border-box; /* Firefox */
+    -webkit-box-sizing:border-box; /* Safari */
+    width:100%;
+    height: 72px;
+    padding:7px 10px;
+    border:0 none;
+    outline: 0 none;
+    resize:none;
+
+}
+.btn-wrap{
+    text-align: center;
+}
+.radio-wrap{
+    overflow: hidden;
+    font-size: 0;
+}
+.radio-wrap span{
+    display: inline-block;
+    font-size: 12px;
+}
+.radio-wrap .custom-radio{
+    position:relative;
+    margin-right:20px;
+}
+.radio-wrap .option input[type="radio"]{
+    position:absolute;
+    opacity:0;
+    width:1px;
+    height:1px;
+    top:50%;
+    left:2px;
+    z-index:-1;
+}
+.radio-wrap .custom-radio > label{
+    cursor: pointer;
+    padding-left:30px;
+    height:36px;
+    line-height:36px;
+    background: url('images/uncheck.png') no-repeat scroll left center;
+}
+.radio-wrap .custom-radio > label.checked{
+    background: url('images/checked.png') no-repeat scroll left center;
+}
+
+.app .option{
+    width: 100px;
+    margin-bottom:8px;
+}
+
+
+.channelType .option,
+.state .option{
+    width: 200px;
+    margin-bottom:8px;
+}
+
+.getway .option{
+    width: 300px;
+    margin-bottom:8px;
+}
+
+.push-mode .option{
+    display:block;
+    margin-bottom:8px;
+}
+
+.date-time{
+    padding:8px 10px;
+    width: 200px;
+    height: 20px;
+    line-height:20px;
+    margin-left: 52px;
+    border:1px solid #e6e7ec;
+    border-radius:3px;
+    color: #333;
+    background: #fff url('images/dateicon.png') no-repeat scroll right center;
+}
+.date-time:focus{
+    border-color: #009ce5;
+}
+
+.submit{
+    display: inline-block;
+    width: 200px;
+    height: 35px;
+    line-height: 35px;
+    overflow: hidden;
+    border:1px solid #676767;
+    background: #fff;
+    border-radius:3px;
+    color: #676767;
+    margin:0 10px;
+    text-align: center;
+    vertical-align: middle;
+    *display: inline;
+    *zoom:1;
+}
+.submit:hover{
+    color: #fff;
+    border-color: #009ce5;
+    background: #009ce5;
+}
+
+.drop-down{
+    width:208px;
+    border:1px solid #E6E7EC;
+    border-radius:4px;
+    font-size:14px;
+    color:#384141;
+    position:absolute;
+    left:0;
+    top:0;
+    z-index:3;
+    background-color:#fff;
+}
+.drop-down.zindex{
+    z-index:11;
+}
+.drop-down:after{
+    background:url(images/icon.png) no-repeat 0px -115px;
+    display:block;
+    width:12px;
+    height:6px;
+    content:'';
+    position:absolute;
+    z-index:2;
+    right:21px;
+    top:16px;
+}
+.drop-txt{
+    display:block;
+    border:none;
+    background:none;
+    cursor:pointer;
+    display:block;
+    color:#384141;
+    font-size:14px;
+    width:178px;
+    height:14px;
+    line-height:14px;
+    padding:12px 15px;
+}
+.drop-span{
+    height:auto;
+    display:none;
+}
+.drop-span a{
+    display:block;
+    width:100%;
+    height:40px;
+    line-height:40px;
+    text-indent:15px;
+    color:#384141;
+    font-size:14px;
+}
+.drop-span a:hover{
+    color:#fff;
+    background:#009CE5;
+}
+
+.submit,.submit:hover,
+.form-item .form-detail .input-wrap,
+input,input:focus,
+.drop-span a,.drop-span a:hover{
+    -webkit-transition:all 0.2s;
+    -moz-transition:all 0.2s;
+    -o-transition:all 0.2s;
+    transition:all 0.2s;
+}
+
+/* 密码修改部分样式修改 start 2015.10.23 jiangfeng */
+#pwdModify .input-wrap{
+    width:360px;
+    display: inline-block;
+    vertical-align: middle;
+    *display: inline;
+    *zoom:1;
+}
+#pwdModify .error-tips{
+    margin-left: 10px;
+    width: 400px;
+    display: inline-block;
+    vertical-align: middle;
+    display: none;
+    *display: inline;
+    *zoom:1;
+}
+/* 密码修改部分样式修改 end 2015.10.23 jiangfeng */
+
+@media screen and (min-width:800px){
+    .form-item .form-detail .input-wrap input{
+        width: 80%;
+    }
+    .form-item .form-detail .input-wrap input.complete-input{
+        width: 96%;
+    }
+}
+@media screen and (min-width:1160px){
+    .form-item .form-detail .input-wrap input{
+        width: 84%;
+    }
+    .form-item .form-detail .input-wrap input.complete-input{
+        width: 98%;
+    }
+}
+@media screen and (min-width:1360px){
+    .form-item .form-detail .input-wrap input{
+        width: 90%;
+    }
+    .form-item .form-detail .input-wrap input.complete-input{
+        width: 98%;
+    }
+}
+@media screen and (min-width:1900px){
+    .form-item .form-detail .input-wrap input{
+        width: 92%;
+    }
+    .form-item .form-detail .input-wrap input.complete-input{
+        width: 98%;
+    }
+}
+
+@-moz-document url-prefix(){  /*firefox*/
+    input[required]:invalid, input:focus:invalid, textarea[required]:invalid, textarea:focus:invalid{
+        box-shadow: none;
+        -moz-box-shadow:none;
+    }
+}
+
+.required {
+    color:#F00;
+    margin-right:10px;
+}

@@ -1,0 +1,39 @@
+﻿html,body{
+	width: 100%;height: 100%;
+}
+em,i{ font-style:normal;}
+img{ border:0px none;}
+body{font-size:14px; font-family:"Microsoft Yahei","weiruanya"; color:#333; }
+.fl{ float:left;}
+.fr{float:right;}
+.cl-div{ clear:both; width:100%;}
+.hide{ display:none;}
+/*-----------------------------------------------------------------------------------*/
+.logCont{background:#4E5658 url(images/stock.jpg) no-repeat scroll center center;background-size:cover; height:100%;min-height:405px;}
+.main{ width:383px; height:405px !important; position:absolute; left:50%; top:50%; margin:-180px 0 0 -192px; z-index:10;}
+.logo{ display:block; margin:0 0 57px 84px; width:189px; height:53px; overflow:hidden; text-indent:-999em;}
+.login{color:#fff;	font-size:15px;	width: 383px;	background:#fff;	border-radius: 3px; padding-bottom:36px;}
+.login h2{color:#707070;font-size:22px;text-align:center; border-bottom:1px solid #DCDCDC; height:68px; padding-top:12px; line-height:68px; font-weight:200; margin:0 auto 25px auto; width:300px;}
+.login h2 i{ padding:0 5px; color:#009CE5;}
+.inputDiv{margin:0 0 0 39px;width:300px;height:auto;border:1px solid #DCDCDC;border-radius:5px; }
+.inputDiv span{ display:block;height:42px; line-height: 16px;position:relative;border-top:1px solid #e6e7ec;}
+.inputDiv span:first-child{border-top:0px none;}
+.inputStyle{ font-size:14px;width:210px;height:16px;border:none;color:#707070; z-index:10; position:relative; background:none; margin-left:75px; display:block; padding:13px 10px 13px 0;}
+.show{ position:absolute; top:0px; left:10px;color:#707070;height:42px;width:55px;display:block;line-height:42px; text-align:center;}
+.red{font-size:12px;color:#f00;display:block; height:22px; padding:0 0 0 39px; width:302px; text-align:left; line-height:22px; visibility:hidden;}
+.red.on{ visibility:visible;}
+.loginBtn{ border:none;display:block;background:#009CE5;border-radius:3px; width:302px; height:40px; line-height:40px; margin-left:39px;  text-align:center;color:#fff;font-size:12px;cursor:pointer;}
+.unloginBtn{ background:#A6DCF6;}
+input:focus {outline:none;}
+.p_copyright{ color:#999; font-size:14px; height:50px; line-height:50px; position:fixed; width:100%; text-align:center; bottom:0px; left:0px; z-index:1;}
+.inputStyle-code{
+  width:120px;
+}
+.getCodeBtn{
+  position:absolute;
+  top:2px;
+  right:7px;
+  height:38px;
+  width:80px;
+  display:block;
+}

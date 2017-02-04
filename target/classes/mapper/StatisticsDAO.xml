@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.message.dao.StatisticsDAO">
+
+
+    <!--查询消费纪录 077-->
+    <select id="queryConsumptionRecordList" resultType="com.message.entities.ConsumptionRecord">
+        SELECT c.id, c.cost, c.refund, c.create_date, u.username
+        FROM consumption_record c
+        LEFT JOIN user u ON c.user_id = u.id
+        WHERE 1=1
+        <if test="record.userId != null and record.userId != '' ">
+            AND c.user_id = #{record.userId}
+        </if>
+        <if test="record.userName != null and record.userName != ''">
+            AND u.username like CONCAT('%', #{record.userName}, '%')
+        </if>
+        <if test="record.startDate != null and record.startDate != '' ">
+            AND c.create_date >= #{record.startDate}
+        </if>
+        <if test="record.endDate != null and record.endDate != '' ">
+            AND c.create_date  <![CDATA[<=]]> #{record.endDate}
+        </if>
+    </select>
+
+    <!--查询消费纪录数量 077-->
+    <select id="getConsumptionRecordCount" resultType="java.lang.Integer">
+        SELECT COUNT(1) FROM consumption_record c
+        LEFT JOIN user u ON c.user_id = u.id
+        WHERE 1=1
+        <if test="record.userId != null and record.userId != '' ">
+            AND c.user_id = #{record.userId}
+        </if>
+        <if test="record.userName != null and record.userName != ''">
+            AND u.username like CONCAT('%', #{record.userName}, '%')
+        </if>
+        <if test="record.startDate != null and record.startDate != '' ">
+            AND c.create_date >= #{record.startDate}
+        </if>
+        <if test="record.endDate != null and  record.endDate != '' ">
+            AND c.create_date  <![CDATA[<=]]> #{record.endDate}
+        </if>
+    </select>
+
+
+
+    <select id="queryDepositList" resultType="com.message.entities.DepositAccount">
+        SELECT u.username, t.amount, t.deposit_type, t.create_date, t.trace_no FROM `deposit_record` t
+        LEFT JOIN `user` u ON t.user_id = u.id
+        <where>
+            <if test="depositAccount.userId != null and depositAccount.userId != '' ">
+                AND t.user_id = #{depositAccount.userId}
+            </if>
+            <if test="depositAccount.userName != null and  depositAccount.userName != '' ">
+                AND u.username LIKE CONCAT('%', #{depositAccount.userName}, '%')
+            </if>
+            <if test="depositAccount.startDate != null and depositAccount.startDate != '' ">
+                AND t.create_date <![CDATA[>=]]> #{depositAccount.startDate}
+            </if>
+            <if test="depositAccount.endDate != null and depositAccount.endDate != '' ">
+                AND t.create_date <![CDATA[<=]]> #{depositAccount.endDate}
+            </if>
+        </where>
+    </select>
+
+
+
+
+    <select id="getDepositCount" resultType="java.lang.Integer">
+        SELECT COUNT(1) FROM `deposit_record` t
+        LEFT JOIN `user` u ON t.user_id = u.id
+        <where>
+            <if test="depositAccount.userId != null and depositAccount.userId != '' ">
+                AND t.user_id = #{depositAccount.userId}
+            </if>
+            <if test="depositAccount.userName != null and depositAccount.userName != '' ">
+                AND u.username LIKE CONCAT('%', #{depositAccount.userName}, '%')
+            </if>
+            <if test="depositAccount.startDate != null and depositAccount.startDate != '' ">
+                AND t.create_date <![CDATA[>=]]> #{depositAccount.startDate}
+            </if>
+            <if test="depositAccount.endDate != null and depositAccount.endDate != '' ">
+                AND t.create_date <![CDATA[<=]]> #{depositAccount.endDate}
+            </if>
+        </where>
+    </select>
+
+
+
+    <select id="getExportConsumption" resultType="com.message.entities.ConsumptionRecord">
+        SELECT c.id,c.cost, c.refund, c.create_date, u.username, g.price, g.description
+        FROM consumption_record c
+        LEFT JOIN user u ON c.user_id = u.id
+        LEFT JOIN gateway g ON c.gateway_id = g.id
+        WHERE c.deleted = 1
+        <if test="dto.userName != null and dto.userName != '' ">
+            AND u.username LIKE CONCAT('%', #{dto.userName}, '%')
+        </if>
+        <if test="dto.startDate != null and dto.startDate != '' ">
+            AND c.create_date <![CDATA[>=]]> #{dto.startDate}
+        </if>
+        <if test="dto.endDate != null and  dto.endDate != '' ">
+            AND c.create_date <![CDATA[<=]]> #{dto.endDate}
+        </if>
+    </select>
+
+
+
+    <insert id="saveDepositRecord">
+        INSERT INTO
+        deposit_record(user_id,amount,deposit_type,gateway_id,trace_no)
+        VALUE
+        (#{record.userId},#{record.amount},#{record.depositType},#{record.gatewayId},#{record.traceNo})
+    </insert>
+
+
+    <insert id="saveConsumptionRecord" useGeneratedKeys="true" keyProperty="record.id">
+        INSERT INTO
+        consumption_record(user_id,cost,batch_id,trace_id,gateway_id)
+        VALUE
+        (#{record.userId},#{record.cost},#{record.batchId},#{record.traceId},#{record.gatewayId})
+    </insert>
+
+</mapper>

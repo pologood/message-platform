@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.message.dao.TemplateDAO">
+
+
+
+    <!--<update id="update">
+        UPDATE `sms_template` SET template = #{template.template},template_code = #{template.templateCode},aliyun_code = #{template.aliyunCode}
+        WHERE id = #{template.id}
+    </update>
+
+
+    <delete id="delete">
+        DELETE FROM `sms_template` WHERE id = #{id}
+    </delete>
+
+
+    <select id="queryTemplateList" resultMap="result">
+        SELECT t.id, t.template, t.create_date, t.user_id, u.username, t.template_code, t.aliyun_code
+        FROM `sms_template` t
+        LEFT JOIN `user` u ON t.user_id = u.id
+        <where>
+            <if test="template.userId != null">
+                (t.user_id = #{template.userId} OR u.roles LIKE '%admin%')
+            </if>
+            <if test="template.userName != null and template.userName != ''">
+                AND u.username LIKE CONCAT('%', #{template.userName}, '%')
+            </if>
+            <if test="template.templateCode != null and template.templateCode != ''">
+                AND t.template_code LIKE CONCAT('%', #{template.templateCode}, '%')
+            </if>
+            <if test="template.aliyunCode != null and template.aliyunCode != ''">
+                AND t.aliyun_code LIKE CONCAT('%', #{template.aliyunCode}, '%')
+            </if>
+            <if test="template.template != null and template.template != ''">
+                AND t.template LIKE CONCAT('%', #{template.template}, '%')
+            </if>
+
+        </where>
+    </select>
+
+
+
+    <select id="getTemplateCount" resultType="java.lang.Integer">
+        SELECT COUNT(1) FROM `sms_template` t
+        LEFT JOIN `user` u ON t.user_id = u.id
+        <where>
+            <if test="template.userId != null">
+                (t.user_id = #{template.userId} OR u.roles LIKE '%admin%')
+            </if>
+            <if test="template.userName != null and template.userName != ''">
+                AND u.username LIKE CONCAT('%', #{template.userName}, '%')
+            </if>
+            <if test="template.template != null and template.template != ''">
+                AND t.template LIKE CONCAT('%', #{template.template}, '%')
+            </if>
+
+        </where>
+    </select>
+
+
+    <select id="getTemplateById" resultMap="result">
+        SELECT t.id, t.user_id, t.template, t.template_code, t.aliyun_code, u.username
+        FROM sms_template t
+        left join user u on u.id = t.user_id
+        WHERE t.id = #{id}
+    </select>
+
+
+    <select id="getTemplateByCode" resultMap="result">
+        SELECT t.id, t.user_id, t.template, t.template_code, t.aliyun_code, u.username
+        FROM sms_template t
+        left join user u on u.id = t.user_id
+        WHERE t.template_code = #{templateCode}
+    </select>
+
+
+
+    <insert id="save" useGeneratedKeys="true" keyProperty="template.id">
+        INSERT INTO sms_template (user_id,template,template_code, aliyun_code)
+        VALUES (#{template.userId},#{template.template},#{template.templateCode},#{template.aliyunCode})
+    </insert>
+
+
+    <select id="getTemplateByCodeAndUserName" resultMap="result">
+        SELECT t.id, t.user_id, t.template_code, t.aliyun_code, t.template
+        FROM sms_template t
+        JOIN `user` u on u.id=t.user_id
+        WHERE 1=1
+        <if test="userName != null and userName != ''" >AND u.username = #{userName}</if>
+        <if test="templateCode != null and templateCode != ''" >AND t.template_code = #{templateCode}</if>
+    </select>-->
+</mapper>

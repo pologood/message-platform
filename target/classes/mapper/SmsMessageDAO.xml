@@ -1,0 +1,403 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.message.dao.SmsMessageDAO">
+
+
+
+    <!--获取发送短信的列表-->
+    <select id="querySMSMessageList" resultType="com.message.entities.SmsMessage">
+        SELECT s.id, s.mobile, s.content, s.status, s.execute_time, s.create_date, s.comment, u.username,
+        CASE WHEN s.template_code IS NULL THEN '&#45;&#45;' ELSE s.template_code END AS template_code
+        FROM sms_message s
+        LEFT JOIN user u ON s.user_id = u.id
+        WHERE 1=1
+        <if test="messageDTO.userId != null">
+            and s.user_id = #{messageDTO.userId}
+        </if>
+        <if test="messageDTO.mobile != null and messageDTO.mobile != ''">
+            and s.mobile = #{messageDTO.mobile}
+        </if>
+        <if test="messageDTO.status != null and messageDTO.status != ''">
+            and s.status = #{messageDTO.status}
+        </if>
+        <if test="messageDTO.startDate != null and messageDTO.startDate != '' ">
+            and s.execute_time is null and s.create_date <![CDATA[>=]]> #{messageDTO.startDate}
+
+        </if>
+        <if test="messageDTO.endDate != null and messageDTO.endDate != '' ">
+            and s.execute_time is null and s.create_date  <![CDATA[<=]]> #{messageDTO.endDate}
+
+        </if>
+    </select>
+
+    <!--获取发送短信的列表的数量-->
+    <select id="getSMSMessageCount" resultType="java.lang.Integer">
+        SELECT COUNT(1) FROM sms_message s
+        WHERE 1=1
+        <if test="messageDTO.userId != null">
+            and s.user_id = #{messageDTO.userId}
+        </if>
+        <if test="messageDTO.mobile != null and messageDTO.mobile != ''">
+            and s.mobile = #{messageDTO.mobile}
+        </if>
+        <if test="messageDTO.status != null and messageDTO.status != ''">
+            and s.status = #{messageDTO.status}
+        </if>
+        <if test="messageDTO.startDate != null and messageDTO.startDate != '' ">
+            and s.execute_time is null and s.create_date <![CDATA[>=]]> #{messageDTO.startDate}
+        </if>
+        <if test="messageDTO.endDate != null and messageDTO.endDate != '' ">
+            and s.execute_time is null and s.create_date  <![CDATA[<=]]> #{messageDTO.endDate}
+        </if>
+    </select>
+
+
+    <insert id="save" parameterType="com.message.entities.SmsMessage" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO
+        sms_message(mobile,content,template_code,template_param,price,status,send_type,trace_id,execute_time,user_id,custom_msg,sign)
+        VALUES
+        (#{mobile},#{content},#{templateCode},#{templateParam},#{price},#{status},#{sendType},#{traceId},#{executeTime},#{userId},#{customMsg},#{sign})
+    </insert>
+
+
+
+    <insert id="saveBatch" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO
+        sms_message(mobile,content,template_code,template_param,price,status,send_type,trace_id,batch_id,execute_time,user_id,custom_msg)
+        VALUES
+        <foreach collection ="list" item="Message" index= "index" separator =",">
+            (#{item.mobile},#{item.content},#{item.templateCode},#{item.templateParam}#{item.price},#{item.status},#{item.sendType},#{item.traceId},#{item.batchId},#{item.executeTime},#{item.userId},#{item.customMsg})
+        </foreach>
+    </insert>
+
+
+
+    <update id="update">
+        UPDATE sms_message s
+        SET s.content   = #{smsMessage.content},
+            s.status    = #{smsMessage.status},
+            s.comment   = #{smsMessage.comment},
+            s.trace_id  = #{smsMessage.traceId},
+        WHERE s.id = #{smsMessage.id}
+    </update>
+
+
+    <!--<insert id="save" parameterType="com.message.entities.SmsMessage" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO
+          sms_message(mobile,content,template_code,template_param,channel_id,channel_name,gateway_name,price,status,send_type,trace_id,execute_type,execute_time,user_id,custom_msg,weighing,sign)
+        VALUES
+          (#{mobile},#{content},#{templateCode},#{templateParam},#{channelId},#{channelName},#{gatewayName},#{price},#{status},#{sendType},#{traceId},#{executeType},#{executeTime},#{userId},#{customMsg},#{weighing},#{sign})
+    </insert>
+
+    <insert id="batchSave" parameterType="com.message.entities.BatchSmsMessage" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO
+        sms_message(mobile,content,template_code,template_param,channel_id,channel_name,gateway_name,price,status,send_type,trace_id,batch_id,execute_type,execute_time,user_id,custom_msg,weighing)
+        VALUES
+        <foreach collection="smsList" item="item" separator=",">
+            (#{item.mobile},#{item.content},#{item.templateCode},#{item.templateParam},#{item.channelId},#{item.channelName},#{item.gatewayName},#{item.price},#{item.status},#{item.sendType},#{item.traceId},#{item.batchId},#{item.executeType},#{item.executeTime},#{item.userId},#{item.customMsg},#{item.weighing})
+        </foreach>
+    </insert>-->
+
+
+    <!--<update id="update">
+        UPDATE sms_message s
+        SET s.content = #{message.content},
+            s.status = #{message.status},
+            s.comment = #{message.comment},
+            s.gateway_id = #{message.gatewayId},
+            s.gateway_name = #{message.gatewayName},
+            s.polled = #{message.polled},
+            s.trace_id = #{message.traceId},
+            s.send_failed_gateways = #{message.sendFailedGateways}
+        WHERE s.id = #{message.id}
+    </update>
+
+
+
+    <update id="batchUpdate">
+        UPDATE sms_message s
+        SET s.status = #{message.status},
+            s.comment = #{message.comment},
+            s.gateway_name = #{message.gatewayName},
+            s.polled = #{message.polled},
+            s.trace_id = #{message.traceId},
+            s.send_failed_gateways = #{message.sendFailedGateways}
+        WHERE s.batch_id = #{message.batchId}
+    </update>
+
+
+
+
+    <select id="getMessage" resultType="com.message.entities.SmsMessage">
+        SELECT t.id, t.mobile, t.content, t.template_code, t.template_param, t.user_id, t.send_type, t.channel_id,
+        t.channel_name, t.gateway_name, t.status, t.trace_id,t.batch_id, t.polled, t.weighing,
+        t.send_failed_gateways, t.comment, t.sign, t.custom_msg,u.username
+        FROM sms_message t
+        LEFT  JOIN  user u on u.id = t.user_id
+        WHERE t.id = #{id}
+    </select>
+
+    <select id="getBatchMessages" resultType="com.message.entities.SmsMessage">
+        SELECT s.id,s.mobile, s.content, s.template_code,s.template_param, s.user_id,s.send_type,s.channel_id, s.channel_name,s.gateway_name,
+            s.status,s.batch_id,s.trace_id,s.weighing,s.polled
+        FROM sms_message s
+        WHERE s.batch_id = #{batchId}
+    </select>
+
+    <select id="findPollingMessage" resultType="com.message.entities.SmsMessage">
+        SELECT s.id, s.mobile, s.status, s.trace_id, s.weighing, s.user_id, s.custom_msg
+        FROM sms_message s
+        WHERE s.modify_date >= DATE_SUB(CURDATE(), INTERVAL 3 DAY)
+        AND s.status in ("SUCCESS","FAILED")
+        AND (s.call_back = 0 OR s.call_back IS NULL)
+    </select>
+
+
+    <select id="findMessageByTraceId" resultType="com.message.entities.SmsMessage">
+        SELECT s.id,s.mobile,s.user_id,s.trace_id,s.gateway_id,s.gateway_name,s.content,
+            s.price,s.weighing,s.polled,s.status
+        FROM sms_message s
+        WHERE s.trace_id = #{traceId} AND s.mobile = #{mobile} AND s.status = 'EMANATE'
+    </select>
+
+    <select id="querySMSMessageList" resultType="com.message.entities.SmsMessage">
+        SELECT s.id, s.mobile, s.content, s.channel_name, s.gateway_name, s.status, s.execute_time,s.create_date,s.weighing,s.comment,u.username,
+        CASE WHEN s.template_code IS NULL THEN '&#45;&#45;' ELSE s.template_code END AS template_code
+        FROM sms_message s
+        LEFT JOIN user u ON s.user_id = u.id
+        WHERE 1=1
+        <if test="messageDTO.userId != null">
+            and s.user_id = #{messageDTO.userId}
+        </if>
+        <if test="messageDTO.channelName != null and messageDTO.channelName != ''">
+            and s.channel_name = #{messageDTO.channelName}
+        </if>
+        <if test="messageDTO.gatewayName != null and messageDTO.gatewayName != ''">
+            and s.gateway_name = #{messageDTO.gatewayName}
+        </if>
+        <if test="messageDTO.mobile != null and messageDTO.mobile != ''">
+            and s.mobile = #{messageDTO.mobile}
+        </if>
+        <if test="messageDTO.status != null and messageDTO.status != ''">
+            and s.status = #{messageDTO.status}
+        </if>
+        <if test="messageDTO.startDate != null and messageDTO.startDate != '' ">
+            and s.execute_time is null and s.create_date <![CDATA[>=]]> #{messageDTO.startDate}
+
+        </if>
+        <if test="messageDTO.endDate != null and messageDTO.endDate != '' ">
+            and s.execute_time is null and s.create_date  <![CDATA[<=]]> #{messageDTO.endDate}
+
+        </if>
+    </select>
+
+    <select id="querySMSReceivingMessageList" resultType="com.message.entities.SmsReceivingMessage">
+        SELECT s.id, s.sp_code, s.mobile, s.content, s.gateway_name, s.receiving_time FROM sms_receiving_message s
+        WHERE 1=1
+        <if test="messageDTO.gatewayName != null and messageDTO.gatewayName != ''">
+            and s.gateway_name = #{messageDTO.gatewayName}
+        </if>
+        <if test="messageDTO.spCode != null and messageDTO.spCode != ''">
+            and s.sp_code like CONCAT('%', #{messageDTO.spCode}, '%')
+        </if>
+        <if test="messageDTO.mobile != null and messageDTO.mobile != ''">
+            and s.mobile = #{messageDTO.mobile}
+        </if>
+        <if test="messageDTO.startDate != null and messageDTO.startDate != '' ">
+            and s.receiving_time >= #{messageDTO.startDate}
+        </if>
+        <if test="messageDTO.endDate != null and messageDTO.endDate != '' ">
+            and s.receiving_time <![CDATA[<=]]> #{messageDTO.endDate}
+        </if>
+    </select>
+
+    <select id="getSMSMessageCount" resultType="java.lang.Integer">
+        SELECT COUNT(1) FROM sms_message s
+        WHERE 1=1
+        <if test="messageDTO.userId != null">
+            and s.user_id = #{messageDTO.userId}
+        </if>
+        <if test="messageDTO.channelName != null and messageDTO.channelName != ''">
+            and s.channel_name = #{messageDTO.channelName}
+        </if>
+        <if test="messageDTO.gatewayName != null and messageDTO.gatewayName != ''">
+            and s.gateway_name = #{messageDTO.gateway}
+        </if>
+        <if test="messageDTO.mobile != null and messageDTO.mobile != ''">
+            and s.mobile = #{messageDTO.mobile}
+        </if>
+        <if test="messageDTO.status != null and messageDTO.status != ''">
+            and s.status = #{messageDTO.status}
+        </if>
+        <if test="messageDTO.startDate != null and messageDTO.startDate != '' ">
+            and s.execute_time is null and s.create_date <![CDATA[>=]]> #{messageDTO.startDate}
+        </if>
+        <if test="messageDTO.endDate != null and messageDTO.endDate != '' ">
+            and s.execute_time is null and s.create_date  <![CDATA[<=]]> #{messageDTO.endDate}
+        </if>
+    </select>
+
+    <select id="getSMSReceivingMessageCount" resultType="java.lang.Integer">
+        SELECT COUNT(1) FROM sms_receiving_message s
+        WHERE  1=1
+        <if test="messageDTO.gatewayName != null and messageDTO.gatewayName != ''">
+            and s.gateway_name = #{messageDTO.gatewayName}
+        </if>
+        <if test="messageDTO.spCode != null and messageDTO.spCode != ''">
+            and s.sp_code like CONCAT('%', #{messageDTO.spCode}, '%')
+        </if>
+        <if test="messageDTO.mobile != null and messageDTO.mobile != ''">
+            and s.mobile = #{messageDTO.mobile}
+        </if>
+        <if test="messageDTO.startDate != null and messageDTO.startDate != '' ">
+            and s.receiving_time >= #{messageDTO.startDate}
+        </if>
+        <if test="messageDTO.endDate != null and messageDTO.endDate != '' ">
+            and s.receiving_time <![CDATA[<=]]> #{messageDTO.endDate}
+        </if>
+    </select>
+
+    <select id="findSingleTimedSMSMessages" resultType="com.message.entities.SmsMessage">
+        SELECT s.id, s.mobile, s.content, s.channel_name, s.status, s.batch_id, s.trace_id, s.weighing, s.execute_time
+        FROM sms_message s
+        WHERE s.send_type = 'single' AND s.status = 'PENDING' AND s.execute_type = 'TIMED'
+        AND s.execute_time <![CDATA[<=]]> now()
+    </select>
+
+    <select id="findBatchTimedSMSMessages" resultType="com.message.entities.SmsMessage">
+          SELECT s.id, s.mobile, s.content, s.channel_name, s.status, s.batch_id, s.trace_id, s.weighing, s.execute_time
+        FROM sms_message s
+        WHERE s.send_type = 'batch' AND s.status = 'PENDING' AND s.execute_type = 'TIMED' AND s.execute_time <![CDATA[<=]]> now()
+        GROUP BY batch_id
+    </select>
+
+    <insert id="saveReceivingMessage" useGeneratedKeys="true" keyProperty="message.id">
+         INSERT INTO
+          sms_receiving_message(sp_code,mobile,content,gateway_name,receiving_time)
+        VALUES
+          (#{message.spCode},#{message.mobile},#{message.content},#{message.gatewayName},#{message.receivingTime})
+    </insert>
+
+    <select id="getMessageStatus" resultType="com.message.entities.SmsMessage">
+        SELECT s.custom_msg, s.status FROM sms_message s
+        WHERE s.custom_msg
+        IN (<foreach collection="customMsgArray" item="customMsg" separator=",">#{customMsg}</foreach>)
+        AND s.user_id = #{userId}
+    </select>
+
+
+
+    <update id="batchUpdatePolledStatus">
+        UPDATE sms_message s SET s.call_back = 1 WHERE s.id
+        IN
+            (
+            <foreach collection="subList" item="message" separator=",">
+                #{message.id}
+            </foreach>
+            )
+    </update>
+
+
+
+    <select id="getAllSensitiveWords" resultType="java.lang.String">
+        SELECT word FROM sms_sensitive_word
+    </select>
+
+
+
+    <select id="querySensitiveWordList" resultType="com.xkeshi.message.entities.SensitiveWord">
+        SELECT t.id, t.word FROM sms_sensitive_word t WHERE  1=1
+        <if test="smsSensitiveWord.word != null and smsSensitiveWord.word != ''">
+            and t.word like CONCAT('%', #{smsSensitiveWord.word}, '%')
+        </if>
+
+    </select>
+
+    <select id="getSensitiveWordCount" resultType="java.lang.Integer">
+        SELECT COUNT(1) FROM sms_sensitive_word t WHERE  1=1
+        <if test="smsSensitiveWord.word != null and smsSensitiveWord.word != ''">
+            and t.word like CONCAT('%', #{smsSensitiveWord.word}, '%')
+        </if>
+    </select>
+
+
+    <select id="deleteSensitiveWord">
+        DELETE  FROM  sms_sensitive_word WHERE  id = #{id}
+    </select>
+
+
+
+    <insert id="addSensitiveWord" useGeneratedKeys="true">
+        INSERT INTO sms_sensitive_word (word) VALUES (#{word})
+    </insert>
+
+
+    <update id="addSendCounter">
+        UPDATE sms_message s
+        SET s.send_counter = s.send_counter + 1
+        WHERE s.id = #{id}
+    </update>
+
+
+
+    <select id="getCountByDay" resultType="com.xkeshi.message.entities.SmsMessage">
+        SELECT COUNT(1) as weighing, DATE_FORMAT(s.create_date, '%Y-%m-%d') as create_date from sms_message s
+        where DATE_SUB(CURDATE(), INTERVAL 2 WEEK) &lt;= date(s.create_date)
+        <if test="userId != null and userId != ''">
+            and s.user_id = #{userId}
+        </if>
+        GROUP BY DATE_FORMAT(s.create_date, '%Y-%m-%d');
+    </select>
+
+
+
+    <select id="getSmsGatewayUsedAge" resultType="com.xkeshi.message.entities.SmsMessage">
+        SELECT count(1) as weighing, s.gateway_name  from sms_message s
+        WHERE 1 =1
+        <if test="userId != null and userId != ''">
+            and s.user_id = #{userId}
+        </if>
+        GROUP BY s.gateway_name
+    </select>
+
+
+    <select id="getStatusRatio" resultType="com.xkeshi.message.entities.SmsMessage">
+        SELECT count(1) as weighing, s.status  from sms_message s
+        WHERE 1 =1
+        <if test="userId != null and userId != ''">
+            and s.user_id = #{userId}
+        </if>
+        GROUP BY s.status
+    </select>
+
+
+    <select id="getSendCountByGatewayName" resultType="java.lang.Integer">
+        SELECT COUNT(1) FROM  sms_message s WHERE  s.gateway_id = #{gatewayId}
+    </select>
+
+
+    <select id="getReceivedCountByGatewayName" resultType="java.lang.Integer">
+        SELECT COUNT(1) FROM  sms_receiving_message s WHERE  s.gateway_id = #{gatewayId}
+    </select>
+
+
+
+    <update id="updateOnsMessageId">
+        UPDATE  sms_message s SET s.ons_message_id = #{messageId} WHERE 1=1
+        <if test="message.batchId != null and message.batchId != '' ">
+            AND s.batch_id = #{message.batchId}
+        </if>
+        <if test="message.id != null and message.id != '' ">
+            AND s.id = #{message.id}
+        </if>
+
+    </update>
+
+    <select id="getSendCountByChannelId" resultType="java.lang.Integer">
+        SELECT COUNT(1) FROM  sms_message s WHERE  s.channel_id = #{channelId}
+    </select>-->
+
+</mapper>

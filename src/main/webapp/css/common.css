@@ -1,0 +1,406 @@
+@charset "utf-8";
+/*	@description: 消息推送平台公用样式
+*	@author: jiangfeng  
+*	@update: jiangfeng (2015-09-11) */
+
+input::-ms-clear{ /* 清除ie下input输入框的删除功能 */
+	display: none;
+}
+::selection{
+	background:#ff9900;
+	color:#fff;
+}
+::-moz-selection{
+	background:#ff9900;
+	color:#fff;
+}
+.userSelect{
+	-moz-user-select:text;
+	-webkit-user-select:text;
+	-ms-user-select:text;
+	-khtml-user-select:text;
+	user-select:text;
+}
+html{
+	height: 100%;
+}
+body{
+	min-width: 1024px;
+	width: auto;
+	background: #e7e8eb;
+	font-family: 'Microsoft Yahei';
+	height:100%;
+	/*-moz-user-select:none;
+	-webkit-user-select:none;
+	-ms-user-select:none;
+	-khtml-user-select:none;
+	user-select:none;*/
+	}
+input,textarea{
+	font-family: 'Microsoft Yahei';
+}
+.pr{
+	position: relative;
+}
+.pb100{
+	padding-bottom: 100px;
+}
+.fl{
+	float:left;
+}
+.fr{ 
+	float:right;
+}
+.hide{
+	display:none;
+}
+/* 页头 start */
+.header{
+	height: 60px;
+	overflow: hidden;
+	padding:0 32px;
+	background: #1A2940;
+	border-bottom: 1px solid #d9dadc;
+}
+
+.header .logo{
+	display: block;
+	float: left;
+	margin-top: 15px;
+	width: 294px;
+	height: 30px;
+	background: url('images/logo.png') no-repeat scroll 0 0;
+}
+.header .logo span{
+	display: inline-block;
+	width: 160px;
+	height: 24px;
+	overflow: hidden;
+	padding-left: 16px;
+	text-indent: -999px;
+	margin: 3px 0 3px 130px;
+	border-left:1px solid #d1d0d0;
+	background: url('images/logo_title.png') no-repeat scroll 16px 0;
+}
+.header .user{
+	height: 30px;
+	margin-top: 15px;
+	line-height: 30px;
+	text-align: right;
+}
+.header .user .UserName{
+	font-style:normal;
+	color: #f5f5f5;
+	margin-right: 10px;
+    font-size:18px;
+}
+.header .user .exit{
+    font-style:normal;
+	color: #f5f5f5;
+    margin-right: 10px;
+    font-size: 15px;
+}
+/* 页头 end */
+
+.main{
+	clear: both;
+	min-height:500px;
+	height: auto;
+	overflow: hidden;
+	margin: 32px 38px 0;
+	background: #fff;
+	border:1px solid #d9dadc;
+}
+
+/* 左侧导航  start */
+.main .nav{
+	float: left;
+	width: 208px;
+	margin-right: 38px;
+	border-right: 1px solid #d9dadc;
+	padding-bottom:5000px;
+    margin-bottom:-5000px
+}
+
+.nav-wrap{
+	width:100%;
+	height:auto;
+}
+.nav-wrap>.nav-item{
+	border-bottom:1px solid #E7E7EB;
+}
+.nav-item a.icon{
+	display:block;
+	width:207px;
+	height:60px;
+	line-height:60px;
+	text-indent:62px;
+	position:relative;
+	font-size:14px;
+	color: #1a2941;
+	transition:color 0.2s;
+}
+.nav-item a.icon:hover{
+	color:#384141;
+	transition:color 0.2s;
+}
+.nav-item:first-child a.icon{
+	line-height: 72px;
+}
+.nav-item > a.icon:before{
+	position:absolute;
+	content:'';
+	width:16px;
+	height:16px;
+	overflow:hidden;
+	top:50%;
+	left:30px;
+	margin-top:-8px;
+	background:url(images/nav-icon.png) no-repeat;
+}
+.nav-item:first-child a.icon:before{
+	margin-top:-1px;
+}
+.nav-item > a.icon-1:before{
+	background-position:0px -16px;
+}
+.nav-item > a.icon-2:before{
+	background-position:0px -64px;
+}
+
+/*
+// sms  ================  短信模块class
+// msg  ================  消息模块class
+// count ===============  数据统计模块class
+// user-management =====  短信模块class
+// set =================  设置模块class
+*/
+.nav-item > a.sms:before{
+	background-position:0px 0px;
+}
+.nav-item > a.msg:before{
+	background-position:0px -16px;
+}
+.nav-item > a.count:before{
+	background-position:0px -32px;
+}
+.nav-item > a.user-management:before{
+	background-position:0px -48px;
+}
+.nav-item > a.set:before{
+	background-position:0px -64px;
+}
+
+.nav-item ul{
+	height:auto;
+	width:100%;
+	height:auto;
+	display: none;
+}
+.nav-wrap .on > ul{
+	display: block;
+}
+.nav-item .nav-item{
+	height:40px;
+	line-height:40px;
+	text-indent:62px;
+	background:#fff;
+}
+.nav-item .nav-item >a{
+	display: block;
+	font-size:12px;
+	color:#384141;
+	transition:color 0.2s;
+}
+.nav-item .current{
+	background:#1A2940;
+}
+.nav-item .nav-item a:hover{
+	color:#009ce5;
+	transition:color 0.2s;
+}
+.nav-item .current>a,.nav-item .current>a:hover{
+	color:#fff;
+}
+
+/* 左侧导航  end */
+
+/* 右侧内容块 */
+.main .main-detail{
+	padding-left: 20px;
+	padding-bottom:5000px;
+    margin-bottom:-5000px
+}
+
+.main .main-detail .main-warp{
+	margin: 0 40px;
+	overflow: hidden;
+}
+
+.main .main-detail .main-title{
+	overflow: hidden;
+	clear: both;
+	height: 60px;
+	line-height: 72px;
+	border-bottom: 1px solid #e7e7eb;
+
+}
+.main .main-detail .main-title h2{
+	font-size: 14px;
+	color: #111111;
+	font-weight: bold;
+}
+
+/* 展开收起、新增等内容标题处的按钮 */
+.show-sel,.title-btn{
+	height:26px;
+	overflow: hidden;
+	border:1px solid #E7E7EB;
+	position:relative;
+	background-color:#F9F9FA;
+	margin-top:17px;
+	margin-left:10px;
+}
+.show-sel:hover i,.title-btn:hover i{
+	color: #666;
+}
+.show-sel:after,
+.add-title-btn:before,
+.back-title-btn:before{
+	background:url(images/icon.png) no-repeat 0px -115px;
+	display:block;
+	width:12px;
+	height:12px;
+	content:'';
+	position:absolute;
+	z-index:1;
+	top:50%;
+	margin-top: -6px;
+}
+.show-sel:after{
+	height: 6px;
+	right:7px;
+	margin-top: -3px;
+}
+.add-title-btn:before,
+.back-title-btn:before{
+	left: 6px;
+	background-position: 0 -186px;
+}
+.back-title-btn:before{
+	background-position: 0 -198px;
+}
+.show-sel i,.title-btn i{
+	display:block;
+	line-height:26px;
+	font-size:12px;
+	font-style: normal;
+	color:#888;
+	padding:0 6px;
+	width:100%;
+	height:100%;
+	cursor:pointer;
+}
+.show-sel i{
+	padding-right: 24px;
+}
+.add-title-btn i,
+.back-title-btn i
+{
+	padding-left: 24px;
+}
+
+
+/* 遮罩层 */
+.mask{
+	position:fixed;
+	width:100%;
+	height:100%;
+	top:0;
+	left:0;
+	overflow:hidden;
+	z-index:18;
+	background:#000;
+	opacity:0.3;
+	filter: progid:DXImageTransform.Microsoft.Alpha(opacity=30); /* ie8 */	
+	display:none;
+}
+
+/*单选、多选*/
+.radio-wrap,
+.checkbox-wrap{
+	overflow: hidden;
+	font-size:0;
+}
+.radio-wrap span,
+.checkbox-wrap span{
+	display:inline-block;
+	font-size:12px;
+}
+.radio-wrap .custom-radio,
+.checkbox-wrap .custom-checkbox{
+	position:relative;
+	margin-right:12px;
+}
+.radio-wrap .option input[type="radio"],
+.checkbox-wrap .option input[type="checkbox"]{
+	position:absolute;
+	opacity:0;
+	width:1px;
+	height:1px;
+	top:50%;
+	left:2px;
+	z-index:-1;
+}
+.radio-wrap .custom-radio > label,
+.checkbox-wrap .custom-checkbox > label{
+	cursor: pointer;
+	padding-left:20px;
+	height:40px;
+	line-height:40px;
+	background: url('images/uncheck.png') no-repeat scroll left center;
+}
+.radio-wrap .custom-radio > label.checked{
+	background: url('images/checked.png') no-repeat scroll left center;
+}
+.checkbox-wrap .custom-checkbox > label{
+	background: url('images/checkbox-nochecked.png') no-repeat scroll left center;
+}
+.checkbox-wrap .custom-checkbox > label.checked{
+	background: url('images/checkbox-checked.png') no-repeat scroll left center;
+}
+
+.app .option{
+	width: 100px;
+	margin-bottom:8px;
+}
+.push-mode .option{
+	display:block;
+	margin-bottom:8px;
+}
+
+.error-tips{
+	display: none;
+}
+.error-tips p{
+	height:36px;
+	line-height: 36px;
+	color: #545454;
+}
+.error-tips p:before{
+	display: inline-block;
+	content: '';
+	width: 16px;
+	height: 16px;
+	margin-right: 6px;
+	overflow: hidden;
+	background: url('images/icon.png') no-repeat scroll 0 -80px;
+	vertical-align: middle;
+	*display: inline;
+	*zoom:1;
+}
+
+.error_msg,.pop_msg{ height:50px; padding:0 40px; line-height:50px; color:#fff; background:#009CE5; border-radius:4px; font-size:18px; position:fixed; left:50%; top:50%; margin:-30px 0 0 -70px; display:none; z-index:100;} 
+
+
+
